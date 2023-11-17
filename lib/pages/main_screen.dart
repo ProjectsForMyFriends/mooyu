@@ -77,7 +77,35 @@ class MainPage extends HookConsumerWidget {
             itemBuilder: (BuildContext context, int index) {
               return ListTile(
                 onTap: () {
-                  ref.read(recordListProvider.notifier).toggleSelected(index);
+                  showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      title: const Text('记录'),
+                      content: SizedBox(
+                        height: 200,
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('科室：${records[index].department}'),
+                              Text('品牌：${records[index].brand}'),
+                              Text('类型：${records[index].type}'),
+                              Text('序列号：${records[index].serialNumber}'),
+                              Text('日期：${records[index].date}'),
+                              Text('备注：${records[index].remark ?? ''}'),
+                            ]),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, 'Cancel'),
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, 'OK'),
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    ),
+                  );
                 },
                 selected: records[index].selected,
                 leading: Checkbox(
